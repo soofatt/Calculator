@@ -1,15 +1,155 @@
 #include "unity.h"
+#include "CException.h"
+#include "mock_Token.h"
+#include "mock_Stack.h"
+#include "Error.h"
 #include "Calculator.h"
 
-void setUp(void)
-{
+void setUp(){}
+void tearDown(){}
+
+void test_tryEvaluateOperatorsOnStackThenPush_should_evaluate_mul_and_plus(){
+	Stack dataStack;
+	Stack operatorStack;
+	OperatorToken plus = {.type = OPERATOR_TOKEN, .name = "+", .precedence = 70};
+	OperatorToken multiply = {.type = OPERATOR_TOKEN, .name = "*", .precedence = 100};
+	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
+	NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	
+	pop_ExpectAndReturn(&dataStack, &num2);
+	pop_ExpectAndReturn(&dataStack, &num3);
+	createNumberToken_ExpectAndReturn(5, &num5);
+	push_Expect(&dataStack, &num5);
+	
+	evaluateOperator(&dataStack, &plus);
+	
 }
 
-void tearDown(void)
-{
+void test_evaluateOperator_should_add_two_numbers_if_operator_is_plus(){
+	Stack dataStack;
+	OperatorToken plus = {.type = OPERATOR_TOKEN, .name = "+", .precedence = 70};
+	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
+	NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	
+	pop_ExpectAndReturn(&dataStack, &num2);
+	pop_ExpectAndReturn(&dataStack, &num3);
+	createNumberToken_ExpectAndReturn(5, &num5);
+	push_Expect(&dataStack, &num5);
+	
+	evaluateOperator(&dataStack, &plus);
+	
 }
 
-void test_module_generator_needs_to_be_implemented(void)
-{
-	TEST_IGNORE_MESSAGE("Implement me!");
+void test_evaluateOperator_should_minus_two_numbers_if_operator_is_minus(){
+	Stack dataStack;
+	OperatorToken minus = {.type = OPERATOR_TOKEN, .name = "-", .precedence = 70};
+	NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
+	NumberToken num1 = {.type = NUMBER_TOKEN, .value = 1};
+	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
+	
+	pop_ExpectAndReturn(&dataStack, &num3);
+	pop_ExpectAndReturn(&dataStack, &num1);
+	createNumberToken_ExpectAndReturn(2, &num2);
+	push_Expect(&dataStack, &num2);
+	
+	evaluateOperator(&dataStack, &minus);
+	
+}
+
+void test_evaluateOperator_should_multiply_two_numbers_if_operator_is_multiply(){
+	Stack dataStack;
+	OperatorToken multiply = {.type = OPERATOR_TOKEN, .name = "*", .precedence = 100};
+	NumberToken num4 = {.type = NUMBER_TOKEN, .value = 4};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	NumberToken num20 = {.type = NUMBER_TOKEN, .value = 20};
+	
+	pop_ExpectAndReturn(&dataStack, &num4);
+	pop_ExpectAndReturn(&dataStack, &num5);
+	createNumberToken_ExpectAndReturn(20, &num20);
+	push_Expect(&dataStack, &num20);
+	
+	evaluateOperator(&dataStack, &multiply);
+	
+}
+
+void test_evaluateOperator_should_divide_two_numbers_if_operator_is_divide(){
+	Stack dataStack;
+	OperatorToken divide = {.type = OPERATOR_TOKEN, .name = "/", .precedence = 100};
+	NumberToken num10 = {.type = NUMBER_TOKEN, .value = 10};
+	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	
+	pop_ExpectAndReturn(&dataStack, &num10);
+	pop_ExpectAndReturn(&dataStack, &num2);
+	createNumberToken_ExpectAndReturn(5, &num5);
+	push_Expect(&dataStack, &num5);
+	
+	evaluateOperator(&dataStack, &divide);
+	
+}
+
+void test_evaluateOperator_should_modulo_two_numbers_if_operator_is_modulo(){
+	Stack dataStack;
+	OperatorToken modulo = {.type = OPERATOR_TOKEN, .name = "%", .precedence = 100};
+	NumberToken num10 = {.type = NUMBER_TOKEN, .value = 10};
+	NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
+	NumberToken num1 = {.type = NUMBER_TOKEN, .value = 1};
+	
+	pop_ExpectAndReturn(&dataStack, &num10);
+	pop_ExpectAndReturn(&dataStack, &num3);
+	createNumberToken_ExpectAndReturn(1, &num1);
+	push_Expect(&dataStack, &num1);
+	
+	evaluateOperator(&dataStack, &modulo);
+	
+}
+
+void test_evaluateOperator_should_xor_two_numbers_if_operator_is_xor(){
+	Stack dataStack;
+	OperatorToken xor = {.type = OPERATOR_TOKEN, .name = "^", .precedence = 50};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	NumberToken num6 = {.type = NUMBER_TOKEN, .value = 6};
+	NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
+	
+	pop_ExpectAndReturn(&dataStack, &num5);
+	pop_ExpectAndReturn(&dataStack, &num6);
+	createNumberToken_ExpectAndReturn(3, &num3);
+	push_Expect(&dataStack, &num3);
+	
+	evaluateOperator(&dataStack, &xor);
+	
+}
+
+void test_evaluateOperator_should_and_two_numbers_if_operator_is_and(){
+	Stack dataStack;
+	OperatorToken and = {.type = OPERATOR_TOKEN, .name = "&", .precedence = 20};
+	NumberToken num7 = {.type = NUMBER_TOKEN, .value = 7};
+	NumberToken num17 = {.type = NUMBER_TOKEN, .value = 17};
+	NumberToken num1 = {.type = NUMBER_TOKEN, .value = 1};
+	
+	pop_ExpectAndReturn(&dataStack, &num7);
+	pop_ExpectAndReturn(&dataStack, &num17);
+	createNumberToken_ExpectAndReturn(1, &num1);
+	push_Expect(&dataStack, &num1);
+	
+	evaluateOperator(&dataStack, &and);
+	
+}
+
+void test_evaluateOperator_should_or_two_numbers_if_operator_is_or(){
+	Stack dataStack;
+	OperatorToken or = {.type = OPERATOR_TOKEN, .name = "|", .precedence = 10};
+	NumberToken num6 = {.type = NUMBER_TOKEN, .value = 6};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	NumberToken num7 = {.type = NUMBER_TOKEN, .value = 7};
+	
+	pop_ExpectAndReturn(&dataStack, &num6);
+	pop_ExpectAndReturn(&dataStack, &num5);
+	createNumberToken_ExpectAndReturn(7, &num7);
+	push_Expect(&dataStack, &num7);
+	
+	evaluateOperator(&dataStack, &or);
+	
 }
