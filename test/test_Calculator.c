@@ -26,6 +26,52 @@ void test_tryEvaluateOperatorsOnStackThenPush_should_evaluate_mul_first_then_pus
 	pop_ExpectAndReturn(&dataStack, &num10);
 	createNumberToken_ExpectAndReturn(20, &num20);
 	push_Expect(&dataStack, &num20);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	push_Expect(&operatorStack, &minus);
+	
+	tryEvaluateOperatorsOnStackThenPush(&operatorStack, &dataStack, &minus);
+	
+}
+
+void test_tryEvaluateOperatorsOnStackThenPush_should_just_push_mul_if_minus_first(){
+	Stack dataStack;
+	Stack operatorStack;
+	OperatorToken minus = {.type = OPERATOR_TOKEN, .name = "-", .precedence = 70};
+	OperatorToken multiply = {.type = OPERATOR_TOKEN, .name = "*", .precedence = 100};
+	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
+	NumberToken num10 = {.type = NUMBER_TOKEN, .value = 10};
+	NumberToken num4 = {.type = NUMBER_TOKEN, .value = 4};
+	NumberToken num20 = {.type = NUMBER_TOKEN, .value = 20};
+	NumberToken num16 = {.type = NUMBER_TOKEN, .value = 16};
+	
+	//2 - 10 * 4 = 16
+	pop_ExpectAndReturn(&operatorStack, &minus);
+	push_Expect(&operatorStack, &minus);
+	push_Expect(&operatorStack, &multiply);
+	
+	tryEvaluateOperatorsOnStackThenPush(&operatorStack, &dataStack, &multiply);
+	
+}
+
+void test_tryEvaluateOperatorsOnStackThenPush_should_evaluate_mul_first_then_push_minus_due_to_next_operator_is_or(){
+	Stack dataStack;
+	Stack operatorStack;
+	OperatorToken minus = {.type = OPERATOR_TOKEN, .name = "-", .precedence = 70};
+	OperatorToken or = {.type = OPERATOR_TOKEN, .name = "|", .precedence = 10};
+	OperatorToken multiply = {.type = OPERATOR_TOKEN, .name = "*", .precedence = 100};
+	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	NumberToken num4 = {.type = NUMBER_TOKEN, .value = 4};
+	NumberToken num10 = {.type = NUMBER_TOKEN, .value = 10};
+	
+	//3 | 2 * 5 - 4 = 7
+	pop_ExpectAndReturn(&operatorStack, &multiply);
+	pop_ExpectAndReturn(&dataStack, &num2);
+	pop_ExpectAndReturn(&dataStack, &num5);
+	createNumberToken_ExpectAndReturn(10, &num10);
+	push_Expect(&dataStack, &num10);
+	pop_ExpectAndReturn(&operatorStack, &or);
+	push_Expect(&operatorStack, &or);
 	push_Expect(&operatorStack, &minus);
 	
 	tryEvaluateOperatorsOnStackThenPush(&operatorStack, &dataStack, &minus);

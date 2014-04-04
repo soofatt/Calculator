@@ -11,13 +11,18 @@ void tryEvaluateOperatorsOnStackThenPush(Stack *operatorStack, Stack *dataStack,
 	
 	opToken = pop(operatorStack);
 	
-	if(opToken->precedence >= operator->precedence){
-		evaluateOperator(dataStack, opToken);
-		push(operatorStack, operator);
+	while(opToken != NULL){
+		if(opToken->precedence >= operator->precedence){
+			evaluateOperator(dataStack, opToken);
+			opToken = pop(operatorStack);
+		}
+		else{
+			push(operatorStack, opToken);
+			break;
+		}	
 	}
-	else
-		push(operatorStack, operator);
 	
+	push(operatorStack, operator);
 }
 
 void evaluateAllOperatorsOnStack(Stack *operatorStack, Stack *dataStack){
