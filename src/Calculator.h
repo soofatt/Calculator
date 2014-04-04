@@ -1,7 +1,7 @@
 #ifndef Calculator_H
 #define Calculator_H
 
-int evaluate(char *expression);
+int evaluate(char *expression, Stack *operatorStack, Stack *dataStack);
 void tryEvaluateOperatorsOnStackThenPush(Stack *operatorStack, Stack *dataStack, OperatorToken *operator);
 void evaluateAllOperatorsOnStack(Stack *operatorStack, Stack *dataStack);
 void evaluateOperator(Stack *dataStack, OperatorToken *operator);

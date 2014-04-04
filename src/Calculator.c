@@ -6,6 +6,47 @@
 #include "Error.h"
 #include "Calculator.h"
 
+int evaluate(char *expression, Stack *operatorStack, Stack *dataStack){
+	Tokenizer *tokenizer;
+	NumberToken *number;
+	NumberToken *resultNumber;
+	OperatorToken *operator;
+	
+	tokenizer = tokenizerNew(expression);
+	
+	while(1){
+		number = (NumberToken *)nextToken(tokenizer);
+		
+		if(number != NULL){
+			if(number->type != NUMBER_TOKEN){
+				Throw(ERR_NOT_DATA);}
+			else{
+				printf("num: %d\n", number->value);
+				push(dataStack, number);}
+		}
+		
+		else if(number == NULL)
+			Throw(ERR_INVALID_EXPRESSION);
+		
+		operator = (OperatorToken *)nextToken(tokenizer);
+		
+		if(operator != NULL){
+			if(operator->type != OPERATOR_TOKEN)
+				Throw(ERR_NOT_OPERATOR);
+			else{
+				printf("op: %s\n", operator->name);
+				tryEvaluateOperatorsOnStackThenPush(operatorStack, dataStack, operator);}
+		}
+		
+		else if(operator == NULL)
+			break;
+	}
+	evaluateAllOperatorsOnStack(operatorStack, dataStack);
+	resultNumber = pop(dataStack);
+	
+	return resultNumber->value;
+}
+
 void tryEvaluateOperatorsOnStackThenPush(Stack *operatorStack, Stack *dataStack, OperatorToken *operator){
 	OperatorToken *opToken;
 	
@@ -14,14 +55,12 @@ void tryEvaluateOperatorsOnStackThenPush(Stack *operatorStack, Stack *dataStack,
 	while(opToken != NULL){
 		if(opToken->precedence >= operator->precedence){
 			evaluateOperator(dataStack, opToken);
-			opToken = pop(operatorStack);
 		}
 		else{
 			push(operatorStack, opToken);
-			break;
-		}	
+		}
+		opToken = pop(operatorStack);	
 	}
-	
 	push(operatorStack, operator);
 }
 
