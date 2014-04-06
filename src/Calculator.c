@@ -58,6 +58,7 @@ void tryEvaluateOperatorsOnStackThenPush(Stack *operatorStack, Stack *dataStack,
 		}
 		else{
 			push(operatorStack, opToken);
+			break;
 		}
 		opToken = pop(operatorStack);	
 	}
