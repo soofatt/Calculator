@@ -91,55 +91,155 @@ void test_evaluate_should_evaluate_4_mul_3_return_12(){
 	TEST_ASSERT_EQUAL(12, result);
 }
 
-// void test_evaluate_should_evaluate_3_plus_4_plus_5_minus_6(){
-// Test fixture
-	// CEXCEPTION_T e;
-	// Tokenizer tokenizer;
-	// Stack dataStack;
-	// Stack operatorStack;
-	// int result;
+void test_evaluate_should_evaluate_3_plus_4_plus_5_minus_6(){
+//Test fixture
+	CEXCEPTION_T e;
+	Tokenizer tokenizer;
+	Stack dataStack;
+	Stack operatorStack;
+	int result;
 	
-	// OperatorToken plus = {.type = OPERATOR_TOKEN, .name = "+", .precedence = 70};
-	// OperatorToken plus = {.type = OPERATOR_TOKEN, .name = "+", .precedence = 70};
-	// OperatorToken minus = {.type = OPERATOR_TOKEN, .name = "-", .precedence = 70};
-	// NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
-	// NumberToken num4 = {.type = NUMBER_TOKEN, .value = 4};
-	// NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
-	// NumberToken num6 = {.type = NUMBER_TOKEN, .value = 6};
-	// NumberToken num7 = {.type = NUMBER_TOKEN, .value = 7};
-	// NumberToken num12 = {.type = NUMBER_TOKEN, .value = 12};
-	// NumberToken number6 = {.type = NUMBER_TOKEN, .value = 6};
+	OperatorToken plus = {.type = OPERATOR_TOKEN, .name = "+", .precedence = 70};
+	OperatorToken plus1 = {.type = OPERATOR_TOKEN, .name = "+", .precedence = 70};
+	OperatorToken minus = {.type = OPERATOR_TOKEN, .name = "-", .precedence = 70};
+	NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
+	NumberToken num4 = {.type = NUMBER_TOKEN, .value = 4};
+	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
+	NumberToken num6 = {.type = NUMBER_TOKEN, .value = 6};
+	NumberToken result7 = {.type = NUMBER_TOKEN, .value = 7};
+	NumberToken result12 = {.type = NUMBER_TOKEN, .value = 12};
+	NumberToken result6 = {.type = NUMBER_TOKEN, .value = 6};
 
-	// 4 * 3 = 12
-	// tokenizerNew_ExpectAndReturn("3 + 4 + 5 - 6", &tokenizer);
-	// nextToken_ExpectAndReturn(&tokenizer, (Token *)&num3);
-	// push_Expect(&dataStack, &num3);
-	// nextToken_ExpectAndReturn(&tokenizer, (Token *)&plus);
-	// pop_ExpectAndReturn(&operatorStack, NULL);
-	// push_Expect(&operatorStack, &plus);
-	// nextToken_ExpectAndReturn(&tokenizer, (Token *)&num4);
-	// push_Expect(&dataStack, &num4);
-	// nextToken_ExpectAndReturn(&tokenizer, (Token *)&plus);
-	// pop_ExpectAndReturn(&operatorStack, &plus);
-	// push_Expect(&operatorStack, &plus);
-	// nextToken_ExpectAndReturn(&tokenizer, NULL);
+	//3 + 4 + 5 - 6 = 6
+	tokenizerNew_ExpectAndReturn("3 + 4 + 5 - 6", &tokenizer);
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num3);
+	push_Expect(&dataStack, &num3);
 	
-	// pop_ExpectAndReturn(&operatorStack, &mul);
-	// pop_ExpectAndReturn(&dataStack, &num4);
-	// pop_ExpectAndReturn(&dataStack, &num3);
-	// createNumberToken_ExpectAndReturn(12, &num12);
-	// push_Expect(&dataStack, &num12);
-	// pop_ExpectAndReturn(&operatorStack, NULL);
-	// pop_ExpectAndReturn(&dataStack, &num12);
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&plus);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	push_Expect(&operatorStack, &plus);
 	
-	// Try{
-		// result = evaluate("4 * 3", &operatorStack, &dataStack);
-	// }Catch(e){
-		// TEST_FAIL_MESSAGE("Exception thrown");
-	// }
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num4);
+	push_Expect(&dataStack, &num4);
 	
-	// TEST_ASSERT_EQUAL(12, result);
-// }
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&plus1);
+	pop_ExpectAndReturn(&operatorStack, &plus);
+	pop_ExpectAndReturn(&dataStack, &num4);
+	pop_ExpectAndReturn(&dataStack, &num3);
+	createNumberToken_ExpectAndReturn(7, &result7);
+	push_Expect(&dataStack, &result7);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	push_Expect(&operatorStack, &plus1);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num5);
+	push_Expect(&dataStack, &num5);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&minus);
+	pop_ExpectAndReturn(&operatorStack, &plus1);
+	pop_ExpectAndReturn(&dataStack, &num5);
+	pop_ExpectAndReturn(&dataStack, &result7);
+	createNumberToken_ExpectAndReturn(12, &result12);
+	push_Expect(&dataStack, &result12);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	push_Expect(&operatorStack, &minus);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num6);
+	push_Expect(&dataStack, &num6);
+	
+	nextToken_ExpectAndReturn(&tokenizer, NULL);
+	
+	pop_ExpectAndReturn(&operatorStack, &minus);
+	pop_ExpectAndReturn(&dataStack, &num6);
+	pop_ExpectAndReturn(&dataStack, &result12);
+	createNumberToken_ExpectAndReturn(6, &result6);
+	push_Expect(&dataStack, &result6);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	
+	pop_ExpectAndReturn(&dataStack, &result6);
+	
+	Try{
+		result = evaluate("3 + 4 + 5 - 6", &operatorStack, &dataStack);
+	}Catch(e){
+		TEST_FAIL_MESSAGE("Exception thrown");
+	}
+	
+	TEST_ASSERT_EQUAL(6, result);
+}
+
+void test_evaluate_should_evaluate_111_divide_12_plus_13_and_14(){
+//Test fixture
+	CEXCEPTION_T e;
+	Tokenizer tokenizer;
+	Stack dataStack;
+	Stack operatorStack;
+	int result;
+	
+	OperatorToken plus = {.type = OPERATOR_TOKEN, .name = "+", .precedence = 70};
+	OperatorToken divide = {.type = OPERATOR_TOKEN, .name = "/", .precedence = 100};
+	OperatorToken and = {.type = OPERATOR_TOKEN, .name = "&", .precedence = 20};
+	NumberToken num111 = {.type = NUMBER_TOKEN, .value = 111};
+	NumberToken num12 = {.type = NUMBER_TOKEN, .value = 12};
+	NumberToken num13 = {.type = NUMBER_TOKEN, .value = 13};
+	NumberToken num14 = {.type = NUMBER_TOKEN, .value = 14};
+	NumberToken result9 = {.type = NUMBER_TOKEN, .value = 9};
+	NumberToken result22 = {.type = NUMBER_TOKEN, .value = 22};
+	NumberToken result6 = {.type = NUMBER_TOKEN, .value = 6};
+
+	//111 / 12 + 13 & 14
+	tokenizerNew_ExpectAndReturn("111 / 12 + 13 & 14", &tokenizer);
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num111);
+	push_Expect(&dataStack, &num111);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&divide);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	push_Expect(&operatorStack, &divide);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num12);
+	push_Expect(&dataStack, &num12);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&plus);
+	pop_ExpectAndReturn(&operatorStack, &divide);
+	pop_ExpectAndReturn(&dataStack, &num12);
+	pop_ExpectAndReturn(&dataStack, &num111);
+	createNumberToken_ExpectAndReturn(9, &result9);
+	push_Expect(&dataStack, &result9);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	push_Expect(&operatorStack, &plus);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num13);
+	push_Expect(&dataStack, &num13);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&and);
+	pop_ExpectAndReturn(&operatorStack, &plus);
+	pop_ExpectAndReturn(&dataStack, &num13);
+	pop_ExpectAndReturn(&dataStack, &result9);
+	createNumberToken_ExpectAndReturn(22, &result22);
+	push_Expect(&dataStack, &result22);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	push_Expect(&operatorStack, &and);
+	
+	nextToken_ExpectAndReturn(&tokenizer, (Token *)&num14);
+	push_Expect(&dataStack, &num14);
+	
+	nextToken_ExpectAndReturn(&tokenizer, NULL);
+	
+	pop_ExpectAndReturn(&operatorStack, &and);
+	pop_ExpectAndReturn(&dataStack, &num14);
+	pop_ExpectAndReturn(&dataStack, &result22);
+	createNumberToken_ExpectAndReturn(6, &result6);
+	push_Expect(&dataStack, &result6);
+	pop_ExpectAndReturn(&operatorStack, NULL);
+	
+	pop_ExpectAndReturn(&dataStack, &result6);
+	
+	Try{
+		result = evaluate("111 / 12 + 13 & 14", &operatorStack, &dataStack);
+	}Catch(e){
+		TEST_FAIL_MESSAGE("Exception thrown");
+	}
+	
+	TEST_ASSERT_EQUAL(6, result);
+}
 
 void test_evaluate_should_throw_exception_given_plus(){
 //Test fixture
@@ -403,8 +503,8 @@ void test_evaluateOperator_should_minus_two_numbers_if_operator_is_minus(){
 	NumberToken num1 = {.type = NUMBER_TOKEN, .value = 1};
 	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
 	
-	pop_ExpectAndReturn(&dataStack, &num3);
 	pop_ExpectAndReturn(&dataStack, &num1);
+	pop_ExpectAndReturn(&dataStack, &num3);
 	createNumberToken_ExpectAndReturn(2, &num2);
 	push_Expect(&dataStack, &num2);
 	
@@ -437,8 +537,8 @@ void test_evaluateOperator_should_divide_two_numbers_if_operator_is_divide(){
 	NumberToken num2 = {.type = NUMBER_TOKEN, .value = 2};
 	NumberToken num5 = {.type = NUMBER_TOKEN, .value = 5};
 	
-	pop_ExpectAndReturn(&dataStack, &num10);
 	pop_ExpectAndReturn(&dataStack, &num2);
+	pop_ExpectAndReturn(&dataStack, &num10);
 	createNumberToken_ExpectAndReturn(5, &num5);
 	push_Expect(&dataStack, &num5);
 	
@@ -454,8 +554,8 @@ void test_evaluateOperator_should_modulo_two_numbers_if_operator_is_modulo(){
 	NumberToken num3 = {.type = NUMBER_TOKEN, .value = 3};
 	NumberToken num1 = {.type = NUMBER_TOKEN, .value = 1};
 	
-	pop_ExpectAndReturn(&dataStack, &num10);
 	pop_ExpectAndReturn(&dataStack, &num3);
+	pop_ExpectAndReturn(&dataStack, &num10);
 	createNumberToken_ExpectAndReturn(1, &num1);
 	push_Expect(&dataStack, &num1);
 	

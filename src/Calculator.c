@@ -77,8 +77,8 @@ void evaluateAllOperatorsOnStack(Stack *operatorStack, Stack *dataStack){
 
 void evaluateOperator(Stack *dataStack, OperatorToken *operator){
 	NumberToken *result;
-	NumberToken *left = pop(dataStack);
 	NumberToken *right = pop(dataStack);
+	NumberToken *left = pop(dataStack);
 	
 	if(strcmp(operator->name, "+") == 0){
 		result = createNumberToken(left->value + right->value);
